@@ -501,7 +501,7 @@ class elFinderVolumeBox extends elFinderVolumeDriver
         list(, $itemId) = $this->_bd_splitPath($path);
 
         try {
-            $url = self::API_URL.'/files/'.$itemId.'/content';
+            $url = self::API_URL.'/files/'.$itemId.'/thumbnail.png?min_height=' . $this->tmbSize . '&min_width=' . $this->tmbSize;
 
             $contents = $this->_bd_fetch($url, true);
 
@@ -732,6 +732,21 @@ class elFinderVolumeBox extends elFinderVolumeDriver
         }
 
         return true;
+    }
+
+    /**
+     * Return debug info for client.
+     *
+     * @return array
+     **/
+    public function debug()
+    {
+        $res = parent::debug();
+        if (! empty($this->options['accessToken'])) {
+            $res['accessToken'] = $this->options['accessToken'];
+        }
+    
+        return $res;
     }
 
     /*********************************************************************/
@@ -1480,7 +1495,7 @@ class elFinderVolumeBox extends elFinderVolumeDriver
      **/
     protected function _mkfile($path, $name)
     {
-        return $this->_save(tmpfile(), $path, $name, array());
+        return $this->_save($this->tmpfile(), $path, $name, array());
     }
 
     /**
@@ -1662,7 +1677,7 @@ class elFinderVolumeBox extends elFinderVolumeDriver
             $tmpFilePath = isset($metaDatas['uri']) ? $metaDatas['uri'] : '';
             // remote contents
             if (!$tmpFilePath || empty($metaDatas['seekable'])) {
-                $tmpHandle = tmpfile();
+                $tmpHandle = $this->tmpfile();
                 stream_copy_to_stream($fp, $tmpHandle);
                 $metaDatas = stream_get_meta_data($tmpHandle);
                 $tmpFilePath = $metaDatas['uri'];

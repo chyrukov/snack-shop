@@ -1,3 +1,5 @@
+"use strict";
+
 (function(editors, elFinder) {
 	if (typeof define === 'function' && define.amd) {
 		define(['elfinder'], editors);
@@ -8,21 +10,13 @@
 }(function(elFinder) {
 	var // get query of getfile
 		getfile = window.location.search.match(/getfile=([a-z]+)/),
-		// cdns location
-		cdns = {
-			ace        : '//cdnjs.cloudflare.com/ajax/libs/ace/1.2.6',
-			codemirror : '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.26.0',
-			ckeditor   : '//cdnjs.cloudflare.com/ajax/libs/ckeditor/4.7.0',
-			tinymce    : '//cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.3',
-			simplemde  : '//cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2'
-		},
 		useRequire = (typeof define === 'function' && define.amd),
 		hasFlash = (function() {
 			var hasFlash;
 			try {
 				hasFlash = !!(new ActiveXObject('ShockwaveFlash.ShockwaveFlash'));
 			} catch (e) {
-				hasFlash = !!(navigator && navigator.mimeTypes["application/x-shockwave-flash"]);
+				hasFlash = !!(typeof window.orientation === 'undefined' || (navigator && navigator.mimeTypes["application/x-shockwave-flash"]));
 			}
 			return hasFlash;
 		})(),
@@ -79,8 +73,8 @@
 				return;
 			}
 			var pixlr = window.location.search.match(/[?&]pixlr=([^&]+)/),
-			image = window.location.search.match(/[?&]image=([^&]+)/),
-			p, ifm, url, node;
+				image = window.location.search.match(/[?&]image=([^&]+)/),
+				p, ifm, url, node;
 			if (pixlr) {
 				// case of redirected from pixlr.com
 				p = window.parent
@@ -101,9 +95,9 @@
 				}
 				ifm.remove();
 			}
-		};
+		},
 		pixlrSetup = function(opts, fm) {
-			if (!hasFlash) {
+			if (!hasFlash || fm.UA.ltIE8) {
 				this.disabled = true;
 			}
 		},
@@ -131,10 +125,11 @@
 				launch = function() {
 					errtm = setTimeout(error, 10000);
 					myurl += (myurl.indexOf('?') === -1? '?' : '&') + 'pixlr='+node.attr('id');
-					src += '&referrer=elFinder&locktitle=true&locktype=true';
+					src += '&referrer=elFinder&locktitle=true';
 					src += '&exit='+encodeURIComponent(myurl+'&image=0');
 					src += '&target='+encodeURIComponent(myurl);
 					src += '&title='+encodeURIComponent(file.name);
+					src += '&locktype='+encodeURIComponent(file.mime === 'image/png'? 'png' : 'jpg');
 					src += '&image='+encodeURIComponent(node.attr('src'));
 					container
 						.attr('id', node.attr('id')+'iframe')
@@ -203,7 +198,7 @@
 			// MIME types to accept
 			mimes : ['image/jpeg', 'image/png'],
 			// HTML of this editor
-			html : '<div style="width:100%;height:300px;text-align:center;"><img/></div>',
+			html : '<div style="width:100%;height:300px;max-height:100%;text-align:center;"><img/></div>',
 			// called on initialization of elFinder cmd edit (this: this editor's config object)
 			setup : function(opts, fm) {
 				pixlrSetup.call(this, opts, fm);
@@ -221,10 +216,7 @@
 				pixlrLoad.call(this, 'editor', base);
 			},
 			save : function(base) {},
-			// unbind resize event function
-			close : function(base) {
-				//$(window).off('resize.'+$(base).children('img:first').attr('id'));
-			}
+			close : function(base) {}
 		},
 		{
 			// Pixlr Express
@@ -236,9 +228,9 @@
 				single: true
 			},
 			// MIME types to accept
-			mimes : ['image/jpeg', 'image/png'],
+			mimes : ['image/jpeg'],
 			// HTML of this editor
-			html : '<div style="width:100%;height:300px;text-align:center;"><img/></div>',
+			html : '<div style="width:100%;height:300px;max-height:100%;text-align:center;"><img/></div>',
 			// called on initialization of elFinder cmd edit (this: this editor's config object)
 			setup : function(opts, fm) {
 				pixlrSetup.call(this, opts, fm);
@@ -255,10 +247,7 @@
 				pixlrLoad.call(this, 'express', base);
 			},
 			save : function(base) {},
-			// unbind resize event function
-			close : function(base) {
-				//$(window).off('resize.'+$(base).children('img:first').attr('id'));
-			}
+			close : function(base) {}
 		},
 		{
 			// Adobe Creative SDK Creative Tools Image Editor UI
@@ -271,7 +260,7 @@
 			},
 			mimes : ['image/jpeg', 'image/png'],
 			// HTML of this editor
-			html : '<div style="width:100%;height:300px;text-align:center;"><img/></div>',
+			html : '<div style="width:100%;height:300px;max-height:100%;text-align:center;"><img/></div>',
 			// called on initialization of elFinder cmd edit (this: this editor's config object)
 			setup : function(opts, fm) {
 				if (fm.UA.ltIE8 || !opts.extraOptions || !opts.extraOptions.creativeCloudApiKey) {
@@ -321,6 +310,8 @@
 							});
 							// bind switch fullscreen event
 							elfNode.on('resize.'+fm.namespace, function(e, data) {
+								e.preventDefault();
+								e.stopPropagation();
 								data && data.fullscreen && container.appendTo(data.fullscreen === 'on'? elfNode : 'body');
 							});
 							fm.bind('destroy', function() {
@@ -366,7 +357,7 @@
 				if (typeof Aviary === 'undefined') {
 					fm.loadScript(['https://dme0ih8comzn4.cloudfront.net/imaging/v3/editor.js'], function() {
 						init(launch);
-					});
+					}, {loadType: 'tag'});
 				} else {
 					init();
 					launch();
@@ -383,6 +374,12 @@
 		},
 		{
 			// ACE Editor
+			// called on initialization of elFinder cmd edit (this: this editor's config object)
+			setup : function(opts, fm) {
+				if (fm.UA.ltIE8) {
+					this.disabled = true;
+				}
+			},
 			// `mimes` is not set for support everything kind of text file
 			info : {
 				name : 'ACE Editor',
@@ -391,7 +388,7 @@
 			load : function(textarea) {
 				var self = this,
 					dfrd = $.Deferred(),
-					cdn  = cdns.ace,
+					cdn  = this.fm.options.cdns.ace,
 					start = function() {
 						var editor, editorBase, mode,
 						ta = $(textarea),
@@ -568,13 +565,19 @@
 		},
 		{
 			// CodeMirror
+			// called on initialization of elFinder cmd edit (this: this editor's config object)
+			setup : function(opts, fm) {
+				if (fm.UA.ltIE10) {
+					this.disabled = true;
+				}
+			},
 			// `mimes` is not set for support everything kind of text file
 			info : {
 				name : 'CodeMirror',
 				iconImg : 'img/edit_codemirror.png'
 			},
 			load : function(textarea) {
-				var cmUrl = cdns.codemirror,
+				var cmUrl = this.fm.options.cdns.codemirror,
 					dfrd = $.Deferred(),
 					self = this,
 					start = function(CodeMirror) {
@@ -676,12 +679,15 @@
 						});
 					} else {
 						self.fm.loadScript([
-							cmUrl + '/codemirror.min.js',
-							cmUrl + '/addon/mode/loadmode.min.js',
-							cmUrl + '/mode/meta.min.js'
+							cmUrl + '/codemirror.min.js'
 						], function() {
-							self.confObj.loader.resolve(CodeMirror);
-						}, void 0, {obj: window, name: 'CodeMirror'});
+							self.fm.loadScript([
+								cmUrl + '/addon/mode/loadmode.min.js',
+								cmUrl + '/mode/meta.min.js'
+							], function() {
+								self.confObj.loader.resolve(CodeMirror);
+							});
+						}, {loadType: 'tag'});
 					}
 					self.fm.loadCss(cmUrl + '/codemirror.css');
 				}
@@ -703,6 +709,12 @@
 		},
 		{
 			// SimpleMDE
+			// called on initialization of elFinder cmd edit (this: this editor's config object)
+			setup : function(opts, fm) {
+				if (fm.UA.ltIE10) {
+					this.disabled = true;
+				}
+			},
 			info : {
 				name : 'SimpleMDE',
 				iconImg : 'img/edit_simplemde.png'
@@ -712,6 +724,7 @@
 				var self = this,
 					base = $(textarea).parent(),
 					dfrd = $.Deferred(),
+					cdn  = this.fm.options.cdns.simplemde,
 					start = function(SimpleMDE) {
 						var h     = base.height(),
 							delta = base.outerHeight(true) - h + 14,
@@ -753,17 +766,17 @@
 				// check SimpleMDE & start
 				if (!self.confObj.loader) {
 					self.confObj.loader = $.Deferred();
-					self.fm.loadCss(cdns.simplemde+'/simplemde.min.css');
+					self.fm.loadCss(cdn+'/simplemde.min.css');
 					if (useRequire) {
 						require([
-							cdns.simplemde+'/simplemde.min.js'
+							cdn+'/simplemde.min.js'
 						], function(SimpleMDE) {
 							self.confObj.loader.resolve(SimpleMDE);
 						});
 					} else {
-						self.fm.loadScript([cdns.simplemde+'/simplemde.min.js'], function() {
+						self.fm.loadScript([cdn+'/simplemde.min.js'], function() {
 							self.confObj.loader.resolve(SimpleMDE);
-						}, void 0, {obj: window, name: 'SimpleMDE'});
+						}, {loadType: 'tag'});
 					}
 				}
 				self.confObj.loader.done(start);
@@ -853,7 +866,7 @@
 
 				if (!self.confObj.loader) {
 					self.confObj.loader = $.Deferred();
-					$.getScript(cdns.ckeditor + '/ckeditor.js', function() {
+					$.getScript(fm.options.cdns.ckeditor + '/ckeditor.js', function() {
 						self.confObj.loader.resolve();
 					});
 				}
@@ -991,7 +1004,7 @@
 				
 				if (!self.confObj.loader) {
 					self.confObj.loader = $.Deferred();
-					$.getScript(cdns.tinymce + '/tinymce.min.js', function() {
+					$.getScript(fm.options.cdns.tinymce + '/tinymce.min.js', function() {
 						setTimeout(function() {
 							self.confObj.loader.resolve();
 						}, 0);
@@ -1011,7 +1024,7 @@
 			},
 			resize : function(textarea, instance, e, data) {
 				// fit height to base node on dialog resize
-				textarea._setHeight();
+				instance && textarea._setHeight();
 			}
 		},
 		{
