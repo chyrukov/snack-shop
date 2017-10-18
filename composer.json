@@ -26,7 +26,8 @@
         "kartik-v/yii2-widget-switchinput": "*",
         "kartik-v/yii2-widget-fileinput": "@dev",
         "yurkinx/yii2-image": "dev-master",
-        "zelenin/yii2-slug-behavior": "~1.5.1"
+        "zelenin/yii2-slug-behavior": "~1.5.1",
+        "dvizh/yii2-tree": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

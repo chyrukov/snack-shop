@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6a946e56f4ffe8be129421e7f9ab5e9",
+    "content-hash": "0d35550afaa76ab2f711fd95eac75261",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -547,6 +547,51 @@
                 "yii2"
             ],
             "time": "2017-10-12T06:10:53+00:00"
+        },
+        {
+            "name": "dvizh/yii2-tree",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dvizh/yii2-tree.git",
+                "reference": "f9323b19e2691d4ab67dff83956f643b4441d81e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dvizh/yii2-tree/zipball/f9323b19e2691d4ab67dff83956f643b4441d81e",
+                "reference": "f9323b19e2691d4ab67dff83956f643b4441d81e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*",
+                "yiisoft/yii2-bootstrap": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "dvizh\\tree\\": "src\\"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache"
+            ],
+            "authors": [
+                {
+                    "name": "Ilya Pistol",
+                    "email": "admin@nethammer.ru"
+                }
+            ],
+            "description": "it's a simple widget to build tree by model",
+            "homepage": "https://github.com/dvizh/yii2-tree",
+            "keywords": [
+                "tree",
+                "widget",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2017-06-09T04:52:54+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -4369,7 +4414,8 @@
     "stability-flags": {
         "dektrium/yii2-rbac": 20,
         "kartik-v/yii2-widget-fileinput": 20,
-        "yurkinx/yii2-image": 20
+        "yurkinx/yii2-image": 20,
+        "dvizh/yii2-tree": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

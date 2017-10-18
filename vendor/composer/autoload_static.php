@@ -51,6 +51,7 @@ class ComposerStaticInit35a8b02dd8abcaa9f03ba2dc766f2b34
         ),
         'd' => 
         array (
+            'dvizh\\tree\\' => 11,
             'dmstr\\' => 6,
             'dektrium\\user\\' => 14,
             'dektrium\\rbac\\' => 14,
@@ -184,6 +185,10 @@ class ComposerStaticInit35a8b02dd8abcaa9f03ba2dc766f2b34
         'kartik\\base\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-krajee-base',
+        ),
+        'dvizh\\tree\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dvizh/yii2-tree/src',
         ),
         'dmstr\\' => 
         array (

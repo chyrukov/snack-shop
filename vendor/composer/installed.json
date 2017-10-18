@@ -4523,5 +4523,52 @@
             "slug",
             "yii2"
         ]
+    },
+    {
+        "name": "dvizh/yii2-tree",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/dvizh/yii2-tree.git",
+            "reference": "f9323b19e2691d4ab67dff83956f643b4441d81e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/dvizh/yii2-tree/zipball/f9323b19e2691d4ab67dff83956f643b4441d81e",
+            "reference": "f9323b19e2691d4ab67dff83956f643b4441d81e",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0",
+            "yiisoft/yii2": "*",
+            "yiisoft/yii2-bootstrap": "*"
+        },
+        "time": "2017-06-09T04:52:54+00:00",
+        "type": "yii2-extension",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "dvizh\\tree\\": "src\\"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache"
+        ],
+        "authors": [
+            {
+                "name": "Ilya Pistol",
+                "email": "admin@nethammer.ru"
+            }
+        ],
+        "description": "it's a simple widget to build tree by model",
+        "homepage": "https://github.com/dvizh/yii2-tree",
+        "keywords": [
+            "tree",
+            "widget",
+            "yii 2",
+            "yii2"
+        ]
     }
 ]

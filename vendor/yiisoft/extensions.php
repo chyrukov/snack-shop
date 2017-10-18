@@ -194,4 +194,13 @@ return array (
       '@Zelenin/yii/behaviors' => $vendorDir . '/zelenin/yii2-slug-behavior',
     ),
   ),
+  'dvizh/yii2-tree' => 
+  array (
+    'name' => 'dvizh/yii2-tree',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@dvizh/tree' => $vendorDir . '/dvizh/yii2-tree/src',
+    ),
+  ),
 );
