@@ -78,12 +78,24 @@ $config = [
                         Yii::$app->end();
                     }
                 ],
+                'security' => [
+                    'class'  => 'dektrium\user\controllers\SecurityController',
+                    'layout' => '@app/modules/backend/views/layouts/main-login',
+                ],
+                'admin' => [
+                    'class'  => 'dektrium\user\controllers\AdminController',
+                    'layout' => '@app/modules/backend/views/layouts/main',
+                ],
             ],
             /*'modelMap' => [
                 'User' => 'app\models\User',
             ],*/
         ],
-        'rbac' => 'dektrium\rbac\RbacWebModule',
+        'rbac' => [
+            'class' => 'dektrium\rbac\RbacWebModule',
+            'layoutPath' => '@app/modules/backend/views/layouts',
+            'layout' => 'main',
+        ],
         'backend' => [
             'class' => 'app\modules\backend\Module',
             'layoutPath' => '@app/modules/backend/views/layouts',
