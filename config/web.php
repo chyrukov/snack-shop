@@ -101,7 +101,8 @@ $config = [
             'layoutPath' => '@app/modules/backend/views/layouts',
             'layout' => 'main',
 
-        ],               
+        ],
+        'gridview' => ['class' => 'kartik\grid\Module']
     ],
     'controllerMap' => [
         'elfinder' => [

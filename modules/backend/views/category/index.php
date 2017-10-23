@@ -44,50 +44,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-    <br style="clear: both;"></div>
-    
-    <ul class="nav nav-pills">
-        <li role="presentation" <?php if(yii::$app->request->get('view') == 'tree' | yii::$app->request->get('view') == '') echo ' class="active"'; ?>><a href="<?=Url::toRoute(['category/index', 'view' => 'tree']);?>">Деревом</a></li>
-        <li role="presentation" <?php if(yii::$app->request->get('view') == 'list') echo ' class="active"'; ?>><a href="<?=Url::toRoute(['category/index', 'view' => 'list']);?>">Списком</a></li>
-    </ul>
-    
+    <br style="clear: both;"></div>   
     <br style="clear: both;">
     <?php
-    if(yii::$app->request->get('view') == 'list') {
-        $categories = \kartik\grid\GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => '\kartik\grid\CheckboxColumn'],
-                ['class' => 'yii\grid\SerialColumn'],
-                ['attribute' => 'id', 'filter' => false, 'options' => ['style' => 'width: 55px;']],
-                'name',
-                [
-                    'attribute' => 'image',
-                    'format' => 'image',
-                    'filter' => false,
-                    'content' => function ($image) {
-                        if($image = $image->getImage()->getUrl('50x50')) {
-                            return "<img src=\"{$image}\" class=\"thumb\" />";
-                        }
-                    }
-                ],
-                [
-                    'attribute' => 'parent_id',
-                    'filter' => Html::activeDropDownList(
-                        $searchModel,
-                        'parent_id',
-                        Category::buildTextTree(),
-                        ['class' => 'form-control', 'prompt' => 'Категория']
-                    ),
-                    'value' => 'parent.name'
-                ],
-                ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}']
-            ],
-        ]);
-    } else {
+    
         $categories = Tree::widget(['model' => new Category()]);
-    }
+    
     
     echo $categories;
     ?>

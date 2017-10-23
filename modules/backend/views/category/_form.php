@@ -3,10 +3,10 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
-use dvizh\shop\models\Category;
-use dvizh\gallery\widgets\Gallery;
+use app\models\Category;
+//use dvizh\gallery\widgets\Gallery;
 use kartik\select2\Select2;
-use dvizh\seo\widgets\SeoForm;
+//use dvizh\seo\widgets\SeoForm;
 
 ?>
 
@@ -20,18 +20,7 @@ use dvizh\seo\widgets\SeoForm;
 	
 	<?= $form->field($model, 'sort')->textInput() ?>
 	
-    <?php echo $form->field($model, 'text')->widget(
-        \yii\imperavi\Widget::className(),
-        [
-            'plugins' => ['fullscreen', 'fontcolor', 'video'],
-            'options'=>[
-                'minHeight' => 400,
-                'maxHeight' => 400,
-                'buttonSource' => true,
-                'imageUpload' => Url::toRoute(['tools/upload-imperavi'])
-            ]
-        ]
-    ) ?>
+    <?php echo $form->field($model, 'text')->textarea() ?>
     
     <?= $form->field($model, 'parent_id')
             ->widget(Select2::classname(), [
@@ -42,13 +31,6 @@ use dvizh\seo\widgets\SeoForm;
                     'allowClear' => true
                 ],
             ]); ?>
-    
-    <?=Gallery::widget(['model' => $model]);?>
-
-    <?=\dvizh\seo\widgets\SeoForm::widget([
-        'model' => $model, 
-        'form' => $form, 
-    ]); ?>
         
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Изменить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

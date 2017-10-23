@@ -46,7 +46,9 @@ class ComposerStaticInit35a8b02dd8abcaa9f03ba2dc766f2b34
             'kartik\\switchinput\\' => 19,
             'kartik\\select2\\' => 15,
             'kartik\\plugins\\fileinput\\' => 25,
+            'kartik\\grid\\' => 12,
             'kartik\\file\\' => 12,
+            'kartik\\dialog\\' => 14,
             'kartik\\base\\' => 12,
         ),
         'd' => 
@@ -178,9 +180,17 @@ class ComposerStaticInit35a8b02dd8abcaa9f03ba2dc766f2b34
         array (
             0 => __DIR__ . '/..' . '/kartik-v/bootstrap-fileinput',
         ),
+        'kartik\\grid\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-grid',
+        ),
         'kartik\\file\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-fileinput',
+        ),
+        'kartik\\dialog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-dialog',
         ),
         'kartik\\base\\' => 
         array (
